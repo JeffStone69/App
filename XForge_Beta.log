@@ -1,0 +1,7 @@
+2026-05-07 08:57:37,768 | INFO | Full app file written
+2026-05-07 08:57:37,769 | INFO | Creating virtual environment
+2026-05-07 08:57:40,869 | INFO | Upgrading pip
+2026-05-07 08:57:44,013 | INFO | Installing core dependencies
+2026-05-07 08:57:45,769 | ERROR | Installing core dependencies failed: Command 'source venv/bin/activate && pip install gradio yfinance pandas plotly sqlite3' returned non-zero exit status 1.
+2026-05-07 08:57:45,769 | INFO | Launching XForge Trader
+2026-05-07 08:57:45,844 | ERROR | Launching XForge Trader failed: Command 'source venv/bin/activate && python xforge_trader.py' returned non-zero exit status 1.
