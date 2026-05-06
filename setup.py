@@ -1,4 +1,4 @@
-cd ~/GRO && cat > setup.py << 'EOF'
+
 #!/usr/bin/env python3
 """
 XForge Trader v10.1 - Final Clean Bootstrap
