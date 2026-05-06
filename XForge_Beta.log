@@ -5,3 +5,23 @@
 2026-05-07 08:57:45,769 | ERROR | Installing core dependencies failed: Command 'source venv/bin/activate && pip install gradio yfinance pandas plotly sqlite3' returned non-zero exit status 1.
 2026-05-07 08:57:45,769 | INFO | Launching XForge Trader
 2026-05-07 08:57:45,844 | ERROR | Launching XForge Trader failed: Command 'source venv/bin/activate && python xforge_trader.py' returned non-zero exit status 1.
+2026-05-07 08:59:06,860 | INFO | Full app file written
+2026-05-07 08:59:06,861 | INFO | Upgrading pip
+2026-05-07 08:59:07,561 | INFO | Installing core dependencies
+2026-05-07 08:59:08,954 | ERROR | Installing core dependencies failed: Command 'source venv/bin/activate && pip install gradio yfinance pandas plotly sqlite3' returned non-zero exit status 1.
+2026-05-07 08:59:08,954 | INFO | Launching XForge Trader
+2026-05-07 08:59:09,027 | ERROR | Launching XForge Trader failed: Command 'source venv/bin/activate && python xforge_trader.py' returned non-zero exit status 1.
+2026-05-07 09:00:07,170 | INFO | Full app file written
+2026-05-07 09:00:07,170 | INFO | Upgrading pip
+2026-05-07 09:00:07,838 | INFO | Installing core dependencies
+2026-05-07 09:00:09,235 | ERROR | Installing core dependencies failed: Command 'source venv/bin/activate && pip install gradio yfinance pandas plotly sqlite3' returned non-zero exit status 1.
+2026-05-07 09:00:09,235 | INFO | Launching XForge Trader
+2026-05-07 09:00:09,306 | ERROR | Launching XForge Trader failed: Command 'source venv/bin/activate && python xforge_trader.py' returned non-zero exit status 1.
+2026-05-07 09:02:01,858 | INFO | Setup started
+2026-05-07 09:02:01,859 | INFO | Full xforge_trader.py created successfully
+2026-05-07 09:02:01,859 | INFO | → Upgrading pip
+2026-05-07 09:02:02,922 | INFO | → Installing dependencies
+2026-05-07 09:02:04,405 | ERROR | Command failed: Command 'source venv/bin/activate && pip install gradio yfinance pandas plotly sqlite3' returned non-zero exit status 1.
+2026-05-07 09:02:04,405 | INFO | Launching main application
+2026-05-07 09:02:04,405 | INFO | → Launching XForge Trader
+2026-05-07 09:02:04,484 | ERROR | Command failed: Command 'source venv/bin/activate && python xforge_trader.py' returned non-zero exit status 1.
