@@ -1,0 +1,33 @@
+2026-05-07 16:44:35,809 - INFO - Full app written to /Users/jeff/Downloads/XAi/GIT/Xapp/App/xforge_historical_db.py
+2026-05-07 16:44:44,444 - INFO - === XForge Historical DB v1.0 STARTING ===
+2026-05-07 16:44:44,457 - INFO - Database initialized successfully
+2026-05-07 16:45:21,312 - ERROR - Fetch error for AAPL: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:45:21,315 - ERROR - Fetch error for MSFT: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:45:21,315 - ERROR - Fetch error for GOOGL: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:45:57,912 - ERROR - Fetch error for AAPL: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:45:57,916 - ERROR - Fetch error for TSLA: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:45:57,917 - ERROR - Fetch error for NVDA: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:46:36,904 - ERROR - Fetch error for AAPL: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:46:36,905 - ERROR - Fetch error for TSLA: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:46:36,906 - ERROR - Fetch error for NVDA: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:46:47,154 - ERROR - Fetch error for AAPL: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:46:47,155 - ERROR - Fetch error for TSLA: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:46:47,156 - ERROR - Fetch error for NVDA: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:46:48,701 - ERROR - Fetch error for AAPL: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:46:48,702 - ERROR - Fetch error for TSLA: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:46:48,703 - ERROR - Fetch error for NVDA: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:46:51,736 - ERROR - Fetch error for AAPL: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:46:51,737 - ERROR - Fetch error for TSLA: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:46:51,738 - ERROR - Fetch error for NVDA: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:46:55,182 - ERROR - Fetch error for AAPL: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:46:55,183 - ERROR - Fetch error for TSLA: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:46:55,185 - ERROR - Fetch error for NVDA: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:46:57,067 - ERROR - Fetch error for AAPL: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:46:57,068 - ERROR - Fetch error for TSLA: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:46:57,069 - ERROR - Fetch error for NVDA: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:47:30,401 - INFO - Full app written to /Users/jeff/Downloads/XAi/GIT/Xapp/App/xforge_historical_db.py
+2026-05-07 16:47:34,698 - INFO - === XForge Historical DB v1.0 STARTING ===
+2026-05-07 16:47:34,700 - INFO - Database initialized successfully
+2026-05-07 16:47:39,785 - ERROR - Fetch error for AAPL: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:47:39,787 - ERROR - Fetch error for MSFT: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-07 16:47:39,787 - ERROR - Fetch error for GOOGL: PriceHistory.history() got an unexpected keyword argument 'progress'
