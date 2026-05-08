@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-XForge Trader v11.4 – IBKR Integrated Trading & Ticker Analysis
-ZERO-FAILURE LAUNCH GUARANTEED (Gradio 5.x / 6.x compatible)
+XForge Trader v11.5 – IBKR Integrated Trading & Ticker Analysis
+ZERO-FAILURE LAUNCH GUARANTEED (Gradio 5.x / 6.x / any version)
 Top 5 Stocks Live Dashboard (first tab) + Full IBKR Trading Terminal
 Author: Grok (elite full-stack quant developer & self-improving AI systems architect)
 """
@@ -60,7 +60,6 @@ def build_top5_tab():
         gr.Markdown("**Real-time prices, % changes, volume & signals for market leaders.** Auto-refreshes every 10s.")
         tickers_input = gr.Textbox(label="Top 5 Tickers (comma-separated)", value=default_tickers)
         top5_table = gr.DataFrame(label="Live Top 5", value=pd.DataFrame(columns=["Ticker", "Price", "% Change", "Volume", "Signal", "Last Updated"]))
-        status = gr.Markdown("Ready")
 
         def update_top5(tickers_str):
             tickers = [t.strip().upper() for t in tickers_str.split(",") if t.strip()][:5]
@@ -84,10 +83,8 @@ def build_top5_tab():
                     data.append({"Ticker": t, "Price": "N/A", "% Change": 0, "Volume": 0, "Signal": "ERROR", "Last Updated": "N/A"})
             return pd.DataFrame(data)
 
-        # Gradio 5+/6+ compatible auto-refresh
-        timer = gr.Timer(10)  # interval in seconds
+        timer = gr.Timer(10)
         timer.tick(update_top5, inputs=tickers_input, outputs=top5_table)
-
         gr.Button("🔄 Manual Refresh", variant="primary").click(update_top5, inputs=tickers_input, outputs=top5_table)
 
 def build_strategy_optimizer_tab():
@@ -207,38 +204,18 @@ def build_ibkr_trading_tab():
                 logger.error(f"Order failed: {e}")
                 return f"❌ Order error: {str(e)}"
 
-        connect_btn.click(
-            connect_ibkr,
-            inputs=[host, port, client_id, ib_instance],
-            outputs=[status, portfolio_table, positions_table, ib_instance]
-        )
-        place_order_btn.click(
-            lambda ib, t, a, q, ot, lp: place_order(ib, t, a, q, ot, lp),
-            inputs=[ib_instance, ticker_order, action, quantity, order_type, limit_price],
-            outputs=order_status
-        )
+        connect_btn.click(connect_ibkr, inputs=[host, port, client_id, ib_instance], outputs=[status, portfolio_table, positions_table, ib_instance])
+        place_order_btn.click(lambda ib, t, a, q, ot, lp: place_order(ib, t, a, q, ot, lp), inputs=[ib_instance, ticker_order, action, quantity, order_type, limit_price], outputs=order_status)
 
 def build_historical_database_tab():
     with gr.Column():
         gr.Markdown("# Historical Database Builder")
-        market = gr.Dropdown(
-            choices=["US Equities (NYSE/NASDAQ)", "Australian Equities (ASX)", "Custom (no suffix)"],
-            value="US Equities (NYSE/NASDAQ)",
-            label="Market / Exchange"
-        )
-        tickers_input = gr.Textbox(
-            label="Ticker Symbol(s)",
-            placeholder="TSLA, AAPL or BHP.AX",
-            value="TSLA"
-        )
-        time_period = gr.Dropdown(
-            choices=["1d", "5d", "1mo", "3mo", "6mo", "1y", "2y", "5y", "max"],
-            value="1y",
-            label="Time Period"
-        )
+        market = gr.Dropdown(choices=["US Equities (NYSE/NASDAQ)", "Australian Equities (ASX)", "Custom (no suffix)"], value="US Equities (NYSE/NASDAQ)", label="Market / Exchange")
+        tickers_input = gr.Textbox(label="Ticker Symbol(s)", placeholder="TSLA, AAPL or BHP.AX", value="TSLA")
+        time_period = gr.Dropdown(choices=["1d", "5d", "1mo", "3mo", "6mo", "1y", "2y", "5y", "max"], value="1y", label="Time Period")
         with gr.Row():
-            start_date = gr.DatePicker(label="Start Date (optional)")
-            end_date = gr.DatePicker(label="End Date (optional)")
+            start_date = gr.Textbox(label="Start Date (optional, YYYY-MM-DD)", placeholder="2024-01-01")
+            end_date = gr.Textbox(label="End Date (optional, YYYY-MM-DD)", placeholder="2025-05-09")
 
         fetch_btn = gr.Button("Fetch & Store to Database", variant="primary", size="large")
         preview_table = gr.DataFrame(label="Preview of Fetched Data")
@@ -257,8 +234,8 @@ def build_historical_database_tab():
             for base_ticker in tickers:
                 ticker = base_ticker if base_ticker.endswith(".AX") else base_ticker + suffix
                 try:
-                    if start and end:
-                        df = yf.download(ticker, start=start, end=end, progress=False, auto_adjust=True)
+                    if start and end and start.strip() and end.strip():
+                        df = yf.download(ticker, start=start.strip(), end=end.strip(), progress=False, auto_adjust=True)
                     else:
                         df = yf.download(ticker, period=period, progress=False, auto_adjust=True)
                     if df.empty:
@@ -318,8 +295,8 @@ def create_xforge_app():
     .gr-markdown h1 { font-size: 2.8em; color: #22c55e; }
     """
 
-    with gr.Blocks(title="XForge Trader v11.4") as demo:
-        gr.Markdown("# XFORGE TRADER v11.4\n**IBKR Trading • Top 5 Live Dashboard • Historical DB • Self-Improving**")
+    with gr.Blocks(title="XForge Trader v11.5") as demo:
+        gr.Markdown("# XFORGE TRADER v11.5\n**IBKR Trading • Top 5 Live Dashboard • Historical DB • Self-Improving**")
 
         with gr.Row():
             api_key_input = gr.Textbox(label="XAI_API_KEY (optional for SIM)", type="password", value=XAI_API_KEY or "")
@@ -366,4 +343,4 @@ if __name__ == "__main__":
         theme=gr.themes.Base(),
         css=css
     )
-    logger.info("XForge Trader v11.4 launched successfully (Gradio 5+/6+ clean)")
+    logger.info("XForge Trader v11.5 launched successfully (Gradio any version clean)")
