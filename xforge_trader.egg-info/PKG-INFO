@@ -1,4 +1,31 @@
-# XForge
+Metadata-Version: 2.4
+Name: xforge-trader
+Version: 9.2.0
+Summary: Self-Improving Autonomous Trading Intelligence powered by Grok (xAI)
+Author: JeffStone69
+License: MIT
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: gradio>=5.0
+Requires-Dist: yfinance
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: pandas-ta
+Requires-Dist: plotly
+Requires-Dist: openai
+Requires-Dist: pydantic>=2.0
+Requires-Dist: requests
+Requires-Dist: tenacity
+Requires-Dist: ib_insync
+Requires-Dist: python-dotenv
+Requires-Dist: tweepy
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: black; extra == "dev"
+
+# XForge Trader + SIM
 
 ## Professional Algorithmic Trading Workstation with Self-Improving AI
 
@@ -22,7 +49,7 @@ cd xforge-trader
 
 ### Step 2: Install Dependencies
 ```bash
-pip install -e 
+pip install -e .
 ```
 
 ### Step 3: Configure Environment
