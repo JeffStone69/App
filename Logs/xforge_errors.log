@@ -48,3 +48,15 @@
 2026-05-07 17:04:02,488 - ERROR - Fetch error for NVDA: PriceHistory.history() got an unexpected keyword argument 'progress'
 2026-05-07 17:04:17,186 - ERROR - Fetch error for TSLA: PriceHistory.history() got an unexpected keyword argument 'progress'
 2026-05-07 17:04:17,187 - ERROR - Fetch error for NVDA: PriceHistory.history() got an unexpected keyword argument 'progress'
+2026-05-09 09:22:01,844 - ERROR - Failed to load xforge_historical_db: [Errno 2] No such file or directory: '/Users/jeff/Downloads/XAi/GIT/Xapp/App/modules/xforge_historical_db.py'
+2026-05-09 09:22:30,531 - ERROR - HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: TSLA, NVDA, AAPL"}}}
+2026-05-09 09:22:31,666 - ERROR - $TSLA, NVDA, AAPL: possibly delisted; no price data found  (period=1y) (Yahoo error = "No data found, symbol may be delisted")
+2026-05-09 09:23:17,061 - ERROR - $TSLA, NVDA, AAPL: possibly delisted; no price data found  (period=1y) (Yahoo error = "No data found, symbol may be delisted")
+2026-05-09 09:23:23,395 - ERROR - $TSLA, NVDA, AAPL: possibly delisted; no price data found  (period=5y) (Yahoo error = "No data found, symbol may be delisted")
+2026-05-09 09:23:37,818 - ERROR - $TSLA, NVDA, AAPL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-05-09 09:23:37,819 - ERROR - single positional indexer is out-of-bounds
+2026-05-09 09:24:12,868 - ERROR - $TSLA, NVDA, AAPL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-05-09 09:24:12,869 - ERROR - single positional indexer is out-of-bounds
+2026-05-09 09:24:40,182 - ERROR - $TSLA, NVDA, AAPL: possibly delisted; no price data found  (period=5y) (Yahoo error = "No data found, symbol may be delisted")
+2026-05-09 09:24:59,150 - ERROR - $TSLA, NVDA, AAPL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-05-09 09:24:59,151 - ERROR - single positional indexer is out-of-bounds
