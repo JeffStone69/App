@@ -1,3 +1,45 @@
+#!/bin/bash
+# XForge Trader v9.2 – Complete Directory + Full Integration Fix
+set -e
+cd "$(dirname "$0")"
+
+echo "=== [1/8] Creating professional folder structure ==="
+mkdir -p data logs modules
+
+echo "=== [2/8] Moving existing files into new structure ==="
+[ -f SIM.py ] && mv SIM.py modules/
+[ -f shipping.py ] && mv shipping.py modules/
+[ -f xforge_historical_db.py ] && mv xforge_historical_db.py modules/
+[ -f stock_history.db ] && mv stock_history.db data/
+[ -f xforge_historical.db ] && mv xforge_historical.db data/
+[ -f xforge_errors.log ] && mv xforge_errors.log logs/
+
+echo "=== [3/8] Creating requirements.txt ==="
+cat > requirements.txt << 'EOF'
+pandas>=2.0.0
+numpy>=1.24.0
+yfinance>=0.2.0
+matplotlib>=3.7.0
+gradio>=4.44.0
+EOF
+
+echo "=== [4/8] Creating setup.py ==="
+cat > setup.py << 'EOF'
+from setuptools import setup, find_packages
+setup(
+    name="XForge-Trader",
+    version="9.2.0",
+    packages=find_packages(),
+    install_requires=[
+        "pandas>=2.0.0", "numpy>=1.24.0", "yfinance>=0.2.0",
+        "matplotlib>=3.7.0", "gradio>=4.44.0"
+    ],
+    python_requires=">=3.9",
+)
+EOF
+
+echo "=== [5/8] Creating master SIM.py with ALL tabs + integrations ==="
+cat > modules/SIM.py << 'PYEOF'
 import gradio as gr
 import yfinance as yf
 import pandas as pd
@@ -206,3 +248,25 @@ with gr.Blocks(title="XForge Trader v9.2", theme=gr.themes.Soft()) as app:
 
 init_dbs()
 app.launch(server_name="0.0.0.0", server_port=7860, share=False)
+PYEOF
+
+echo "=== [6/8] Creating robust launch.command ==="
+cat > launch.command << 'EOF'
+#!/bin/bash
+cd "$(dirname "$0")"
+[ -f logo.jpg ] && qlmanage -p logo.jpg > /dev/null 2>&1 & sleep 2.5 && pkill -f qlmanage 2>/dev/null || true
+exec python3 modules/SIM.py
+EOF
+chmod +x launch.command
+
+echo "=== [7/8] Installing everything ==="
+python3 -m pip install -r requirements.txt --quiet
+python3 setup.py install --quiet
+
+echo "=== [8/8] Final verification ==="
+ls -la modules/ data/ logs/ launch.command requirements.txt setup.py logo.jpg
+
+echo ""
+echo "✅ FULL INTEGRATION COMPLETE!"
+echo "Run: ./launch.command"
+echo "Open browser: http://localhost:7860"
