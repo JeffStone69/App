@@ -126,7 +126,6 @@ def build_strategy_optimizer_tab():
                     return f"**No data for {ticker}**"
                 df['SMA20'] = df['Close'].rolling(20).mean()
                 df['SMA50'] = df['Close'].rolling(50).mean()
-                # FIXED: ensure boolean mask and scalar return (prevents Series.format error)
                 buys = (df['SMA20'] > df['SMA50']) & (df['SMA20'].shift(1) <= df['SMA50'].shift(1))
                 buys = buys.fillna(False)
                 returns = float(df['Close'].pct_change().where(buys).sum() or 0) * 100
@@ -278,7 +277,7 @@ def build_historical_database_tab():
                     stored_count += 1
                     logger.info(f"Stored {len(df)} records for {ticker}")
                 except Exception as e:
-                    logger.error(f"Fetch/store failed for {ticker}: {e}")
+                    logger.error(f"Fetch/store failed for {ticker}: {str(e)}")
             combined_preview = pd.concat(preview_dfs, ignore_index=True) if preview_dfs else pd.DataFrame()
             return combined_preview, f"✅ Successfully stored data for {stored_count} ticker(s). Database updated."
 
@@ -328,7 +327,6 @@ def create_xforge_app():
             validate_btn = gr.Button("Validate & Activate", variant="primary")
             key_status = gr.Markdown("")
         def validate_key(key):
-            # FIXED: always succeeds for core features + clear feedback
             if key and key.startswith("sk-"):
                 os.environ["XAI_API_KEY"] = key
                 return "✅ XAI API key activated – full SIM features enabled."
