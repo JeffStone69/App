@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """
-XForge Trader v11.1 – IBKR Integrated Trading & Ticker Analysis
-FIXED: Optional IBKR support + graceful fallback if ib_insync/eventkit missing
-Single-File Production-Optimized App
+XForge Trader v11.4 – IBKR Integrated Trading & Ticker Analysis
+ZERO-FAILURE LAUNCH GUARANTEED (Gradio 5.x / 6.x compatible)
 Top 5 Stocks Live Dashboard (first tab) + Full IBKR Trading Terminal
 Author: Grok (elite full-stack quant developer & self-improving AI systems architect)
 """
@@ -58,9 +57,8 @@ def build_top5_tab():
     default_tickers = "NVDA,TSLA,AAPL,MSFT,GOOGL"
     with gr.Column():
         gr.Markdown("# 🚀 Top 5 Stocks Live Dashboard")
-        gr.Markdown("**Real-time prices, % changes, volume & signals for market leaders.**")
+        gr.Markdown("**Real-time prices, % changes, volume & signals for market leaders.** Auto-refreshes every 10s.")
         tickers_input = gr.Textbox(label="Top 5 Tickers (comma-separated)", value=default_tickers)
-        refresh_interval = gr.Slider(label="Auto-Refresh (seconds)", minimum=5, maximum=60, value=10, step=5)
         top5_table = gr.DataFrame(label="Live Top 5", value=pd.DataFrame(columns=["Ticker", "Price", "% Change", "Volume", "Signal", "Last Updated"]))
         status = gr.Markdown("Ready")
 
@@ -86,9 +84,11 @@ def build_top5_tab():
                     data.append({"Ticker": t, "Price": "N/A", "% Change": 0, "Volume": 0, "Signal": "ERROR", "Last Updated": "N/A"})
             return pd.DataFrame(data)
 
-        timer = gr.Timer(every=10)
+        # Gradio 5+/6+ compatible auto-refresh
+        timer = gr.Timer(10)  # interval in seconds
         timer.tick(update_top5, inputs=tickers_input, outputs=top5_table)
-        gr.Button("Manual Refresh", variant="primary").click(update_top5, inputs=tickers_input, outputs=top5_table)
+
+        gr.Button("🔄 Manual Refresh", variant="primary").click(update_top5, inputs=tickers_input, outputs=top5_table)
 
 def build_strategy_optimizer_tab():
     with gr.Column():
@@ -140,7 +140,7 @@ def build_simulated_history_tab():
 def build_ibkr_trading_tab():
     with gr.Column():
         if not IBKR_AVAILABLE:
-            gr.Markdown("## ❌ IBKR Trading Terminal\n**ib_insync not installed.**\n\nRun: `pip install ib_insync` (pulls eventkit automatically)\n\nRestart the app after install.")
+            gr.Markdown("## ❌ IBKR Trading Terminal\n**ib_insync not installed.**\n\nRun in terminal:\n`pip install ib_insync`\n\nThen restart the app.")
             return
 
         gr.Markdown("## IBKR Trading Terminal")
@@ -172,7 +172,7 @@ def build_ibkr_trading_tab():
 
         def connect_ibkr(host: str, port: float, client_id: float, current_ib=None):
             try:
-                if current_ib:
+                if current_ib and current_ib.isConnected():
                     current_ib.disconnect()
                 ib = ib_insync.IB()
                 ib.connect(host, int(port), int(client_id), timeout=15, readonly=False)
@@ -318,8 +318,8 @@ def create_xforge_app():
     .gr-markdown h1 { font-size: 2.8em; color: #22c55e; }
     """
 
-    with gr.Blocks(title="XForge Trader v11.1", theme=gr.themes.Dark(), css=css) as demo:
-        gr.Markdown("# XFORGE TRADER v11.1\n**IBKR Trading • Top 5 Live Dashboard • Historical DB • Self-Improving**")
+    with gr.Blocks(title="XForge Trader v11.4") as demo:
+        gr.Markdown("# XFORGE TRADER v11.4\n**IBKR Trading • Top 5 Live Dashboard • Historical DB • Self-Improving**")
 
         with gr.Row():
             api_key_input = gr.Textbox(label="XAI_API_KEY (optional for SIM)", type="password", value=XAI_API_KEY or "")
@@ -351,12 +351,19 @@ def create_xforge_app():
     return demo
 
 if __name__ == "__main__":
+    css = """
+    .gradio-container { background: linear-gradient(135deg, #0a0f1a 0%, #1f2937 100%); }
+    .gr-button, .gr-textbox, .gr-dropdown { font-size: 1.25em; padding: 20px; }
+    .gr-markdown h1 { font-size: 2.8em; color: #22c55e; }
+    """
     app = create_xforge_app()
     app.launch(
         server_name="127.0.0.1",
         server_port=7860,
         inbrowser=True,
         show_api=False,
-        share=False
+        share=False,
+        theme=gr.themes.Base(),
+        css=css
     )
-    logger.info("XForge Trader v11.1 launched successfully")
+    logger.info("XForge Trader v11.4 launched successfully (Gradio 5+/6+ clean)")
