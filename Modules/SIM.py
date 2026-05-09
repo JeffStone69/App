@@ -23,6 +23,7 @@ def init():
         c.execute('CREATE TABLE IF NOT EXISTS history (id INTEGER PRIMARY KEY, symbol TEXT, date TEXT, close REAL, volume INTEGER)')
         c.commit(); c.close()
 
+# ====================== FULL LIVE TICKERS WITH RSI + BOLLINGER + PROFITABILITY ======================
 def get_live_data(symbol):
     try:
         ticker = yf.Ticker(symbol)
@@ -112,6 +113,7 @@ def live():
                        "Profit Score": ind["Profit Score"]})
     return pd.DataFrame(results), charts, pd.DataFrame(tech), pd.DataFrame(profit)
 
+# ====================== ALL OTHER FUNCTIONS (fully restored) ======================
 def fetch(sym, per="1y"):
     try:
         h = yf.Ticker(sym).history(period=per)
@@ -159,6 +161,7 @@ def errors():
 def update_forge():
     os.system("python3 -c 'import yfinance as yf; print(\"Forge updated\")'"); return "✅ Forge DB refreshed"
 
+# ====================== FINAL GRADIO UI (ALL TABS) ======================
 init()
 with gr.Blocks(title="XForge Trader v9.2") as app:
     gr.Image(os.path.join(BASE, "logo.jpg"), height=100, show_label=False)
