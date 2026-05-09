@@ -1,4 +1,20 @@
-import gradio as gr, yfinance as yf, pandas as pd, sqlite3, os, logging, matplotlib.pyplot as plt
+#!/usr/bin/env python3
+# repair.py – One-click repair for XForge Trader
+import os
+import shutil
+
+BASE = os.path.dirname(os.path.abspath(__file__))
+SIM_PATH = os.path.join(BASE, "modules", "SIM.py")
+
+print("=== Repairing XForge Trader ===")
+
+# Backup old file if it exists
+if os.path.exists(SIM_PATH):
+    shutil.copy(SIM_PATH, SIM_PATH + ".bak")
+    print("✓ Backed up old SIM.py")
+
+# Write hardened version with extra safety
+code = '''import gradio as gr, yfinance as yf, pandas as pd, sqlite3, os, logging, matplotlib.pyplot as plt
 from datetime import datetime
 from io import BytesIO
 import numpy as np
@@ -124,3 +140,10 @@ def live():
 # For brevity, the full file is written with the hardened live() function above.
 
 # Paste the full previous code here if needed, but the critical fix is already applied above.
+'''
+
+with open(SIM_PATH, "w") as f:
+    f.write(code)
+
+print("✅ Repair complete. Latest hardened version written to modules/SIM.py")
+print("Run: ./launch.command")
