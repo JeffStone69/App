@@ -219,7 +219,7 @@ def build_self_improve_tab():
 
 # ====================== MAIN APP ======================
 def create_xforge_app():
-    css = "".gradio-container { background: linear-gradient(135deg, #0a0f1a 0%, #1f2937 100%); color: #e0f0ff; } .gr-button { font-size: 1.25em; padding: 20px 30px; }""
+    css = """.gradio-container { background: linear-gradient(135deg, #0a0f1a 0%, #1f2937 100%); color: #e0f0ff; } .gr-button { font-size: 1.25em; padding: 20px 30px; }"""
     with gr.Blocks(title="XFORGE TRADER v11.3 – SETUP COMPLETE", theme=gr.themes.Default(), css=css) as demo:
         gr.Markdown("# XFORGE TRADER v11.3\n**All errors now logged centrally • Historical DB ready • Self-improving platform live**")
         with gr.Tabs():

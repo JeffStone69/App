@@ -65,3 +65,48 @@ Traceback (most recent call last):
 sqlite3.OperationalError: table historical_prices has no column named ('Date', '')
 
 2026-05-10 05:05:41 | INFO | XForgeSetup | [setup] Default historical ingestion complete: 0 rows
+2026-05-10 05:24:48 | INFO | XForgeSetup | [setup_startup] 🚀 XForge SETUP.PY v11.3 launched – full merge active
+2026-05-10 05:24:48 | INFO | XForgeSetup | [db_init] Historical database initialized/verified
+2026-05-10 05:24:48 | INFO | XForgeSetup | [db_init] Historical database initialized/verified
+2026-05-10 05:24:49 | ERROR | XForgeSetup | [ingest_historical_data] CRITICAL ERROR in ingest_historical_data: table historical_prices has no column named ('Date', '')
+Traceback (most recent call last):
+  File "/Users/jeff/Downloads/XAi/GIT/Xapp/App/setup.py", line 94, in ingest_historical_data
+    df.to_sql('historical_prices', conn, if_exists='append', index=False, method='multi')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/core/generic.py", line 3052, in to_sql
+    return sql.to_sql(
+           ~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<8 lines>...
+        method=method,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/io/sql.py", line 841, in to_sql
+    return pandas_sql.to_sql(
+           ~~~~~~~~~~~~~~~~~^
+        frame,
+        ^^^^^^
+    ...<9 lines>...
+        **engine_kwargs,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/io/sql.py", line 2880, in to_sql
+    return table.insert(chunksize, method)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/io/sql.py", line 1122, in insert
+    num_inserted = exec_insert(conn, keys, chunk_iter)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/io/sql.py", line 2579, in _execute_insert_multi
+    conn.execute(self.insert_statement(num_rows=len(data_list)), flattened_data)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: table historical_prices has no column named ('Date', '')
+
+2026-05-10 05:24:50 | ERROR | XForgeSetup | [main_launch] CRITICAL ERROR in main_launch: Blocks.launch() got an unexpected keyword argument 'show_api'
+Traceback (most recent call last):
+  File "/Users/jeff/Downloads/XAi/GIT/Xapp/App/setup.py", line 239, in <module>
+    app.launch(server_name="127.0.0.1", server_port=7860, inbrowser=True, show_api=False, share=False, quiet=True)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Blocks.launch() got an unexpected keyword argument 'show_api'
+
