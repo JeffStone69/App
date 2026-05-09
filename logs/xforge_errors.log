@@ -110,3 +110,134 @@ Traceback (most recent call last):
     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 TypeError: Blocks.launch() got an unexpected keyword argument 'show_api'
 
+2026-05-10 05:36:35 | INFO | XForgeSetup | [setup_startup] 🚀 XForge SETUP.PY v11.4 launched – ALL ERRORS FIXED
+2026-05-10 05:36:35 | INFO | XForgeSetup | [db_init] Historical database initialized/verified
+2026-05-10 05:36:35 | INFO | XForgeSetup | [db_init] Historical database initialized/verified
+2026-05-10 05:36:36 | ERROR | XForgeSetup | [ingest_historical_data] CRITICAL ERROR in ingest_historical_data: table historical_prices has no column named ('date', '')
+Traceback (most recent call last):
+  File "/Users/jeff/Downloads/XAi/GIT/Xapp/App/setup.py", line 98, in ingest_historical_data
+    df.to_sql('historical_prices', conn, if_exists='append', index=False, method='multi')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/core/generic.py", line 3052, in to_sql
+    return sql.to_sql(
+           ~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<8 lines>...
+        method=method,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/io/sql.py", line 841, in to_sql
+    return pandas_sql.to_sql(
+           ~~~~~~~~~~~~~~~~~^
+        frame,
+        ^^^^^^
+    ...<9 lines>...
+        **engine_kwargs,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/io/sql.py", line 2880, in to_sql
+    return table.insert(chunksize, method)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/io/sql.py", line 1122, in insert
+    num_inserted = exec_insert(conn, keys, chunk_iter)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/io/sql.py", line 2579, in _execute_insert_multi
+    conn.execute(self.insert_statement(num_rows=len(data_list)), flattened_data)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: table historical_prices has no column named ('date', '')
+
+2026-05-10 05:36:46 | ERROR | XForgeSetup | [watchlist_fetch] CRITICAL ERROR in watchlist_fetch: int() argument must be a string, a bytes-like object or a real number, not 'Series'
+Traceback (most recent call last):
+  File "/Users/jeff/Downloads/XAi/GIT/Xapp/App/setup.py", line 124, in fetch_watchlist
+    data.append({"Ticker": t, "Latest Close": round(latest['Close'], 2), "% Change": change_pct, "Volume": int(latest['Volume'])})
+                                                                                                           ~~~^^^^^^^^^^^^^^^^^^
+TypeError: int() argument must be a string, a bytes-like object or a real number, not 'Series'
+
+2026-05-10 05:37:32 | INFO | XForgeSetup | [db_init] Historical database initialized/verified
+2026-05-10 05:37:33 | ERROR | XForgeSetup | [ingest_historical_data] CRITICAL ERROR in ingest_historical_data: table historical_prices has no column named ('date', '')
+Traceback (most recent call last):
+  File "/Users/jeff/Downloads/XAi/GIT/Xapp/App/setup.py", line 98, in ingest_historical_data
+    df.to_sql('historical_prices', conn, if_exists='append', index=False, method='multi')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/core/generic.py", line 3052, in to_sql
+    return sql.to_sql(
+           ~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<8 lines>...
+        method=method,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/io/sql.py", line 841, in to_sql
+    return pandas_sql.to_sql(
+           ~~~~~~~~~~~~~~~~~^
+        frame,
+        ^^^^^^
+    ...<9 lines>...
+        **engine_kwargs,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/io/sql.py", line 2880, in to_sql
+    return table.insert(chunksize, method)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/io/sql.py", line 1122, in insert
+    num_inserted = exec_insert(conn, keys, chunk_iter)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/io/sql.py", line 2579, in _execute_insert_multi
+    conn.execute(self.insert_statement(num_rows=len(data_list)), flattened_data)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: table historical_prices has no column named ('date', '')
+
+2026-05-10 05:37:40 | INFO | XForgeSetup | [db_init] Historical database initialized/verified
+2026-05-10 05:37:40 | ERROR | XForgeSetup | [ingest_historical_data] CRITICAL ERROR in ingest_historical_data: too many SQL variables
+Traceback (most recent call last):
+  File "/Users/jeff/Downloads/XAi/GIT/Xapp/App/setup.py", line 98, in ingest_historical_data
+    df.to_sql('historical_prices', conn, if_exists='append', index=False, method='multi')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/core/generic.py", line 3052, in to_sql
+    return sql.to_sql(
+           ~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<8 lines>...
+        method=method,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/io/sql.py", line 841, in to_sql
+    return pandas_sql.to_sql(
+           ~~~~~~~~~~~~~~~~~^
+        frame,
+        ^^^^^^
+    ...<9 lines>...
+        **engine_kwargs,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/io/sql.py", line 2880, in to_sql
+    return table.insert(chunksize, method)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/io/sql.py", line 1122, in insert
+    num_inserted = exec_insert(conn, keys, chunk_iter)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/io/sql.py", line 2579, in _execute_insert_multi
+    conn.execute(self.insert_statement(num_rows=len(data_list)), flattened_data)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: too many SQL variables
+
+2026-05-10 05:37:47 | INFO | XForgeSetup | [SIM] Self-Improvement cycle started
+2026-05-10 05:37:47 | ERROR | XForgeSetup | [self_improve_SIM] CRITICAL ERROR in self_improve_SIM: XAI_API_KEY not set
+Traceback (most recent call last):
+  File "/Users/jeff/Downloads/XAi/GIT/Xapp/App/setup.py", line 210, in run_sim
+    raise ValueError("XAI_API_KEY not set")
+ValueError: XAI_API_KEY not set
+
+2026-05-10 05:38:17 | ERROR | XForgeSetup | [watchlist_fetch] CRITICAL ERROR in watchlist_fetch: int() argument must be a string, a bytes-like object or a real number, not 'Series'
+Traceback (most recent call last):
+  File "/Users/jeff/Downloads/XAi/GIT/Xapp/App/setup.py", line 124, in fetch_watchlist
+    data.append({"Ticker": t, "Latest Close": round(latest['Close'], 2), "% Change": change_pct, "Volume": int(latest['Volume'])})
+                                                                                                           ~~~^^^^^^^^^^^^^^^^^^
+TypeError: int() argument must be a string, a bytes-like object or a real number, not 'Series'
+
