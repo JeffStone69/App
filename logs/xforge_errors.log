@@ -272,3 +272,17 @@ sqlite3.OperationalError: no such table: history
 2026-05-10 07:47:36 | INFO | XForge Trader | [save_config] Config saved successfully.
 2026-05-10 07:47:41 | INFO | XForge Trader | [git_status] Git command successful: git status
 2026-05-10 07:47:50 | INFO | XForge Trader | [SIM_backup] Script backed up to backups/app_backup_20260510_07:47:50.py
+2026-05-10 08:30:47 | INFO | XForge Trader | [main] XForge Trader starting up (Full Restoration v9.2+)
+2026-05-10 08:30:47 | INFO | XForge Trader | [startup] All functionality restored: Stock Reports, Backtester, Historical DB, SIM Database.
+2026-05-10 08:31:01 | ERROR | XForge Trader | [calculate_stock_indicators] ERROR in calculate_stock_indicators: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+Traceback (most recent call last):
+  File "/Users/jeff/Downloads/XAi/GIT/Xapp/App/app.py", line 195, in calculate_stock_indicators
+    rsi_sig = "Overbought" if rsi_val > 70 else "Oversold" if rsi_val < 30 else "Neutral"
+                              ^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pandas/core/generic.py", line 1513, in __bool__
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+
+2026-05-10 08:31:09 | INFO | XForge Trader | [git_status] Git command successful: git status
