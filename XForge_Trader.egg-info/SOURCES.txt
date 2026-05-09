@@ -1,6 +1,0 @@
-setup.py
-XForge_Trader.egg-info/PKG-INFO
-XForge_Trader.egg-info/SOURCES.txt
-XForge_Trader.egg-info/dependency_links.txt
-XForge_Trader.egg-info/requires.txt
-XForge_Trader.egg-info/top_level.txt

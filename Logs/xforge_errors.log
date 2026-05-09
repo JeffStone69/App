@@ -1,5 +1,0 @@
-2026-05-09 09:52:32,259 - HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: NVDA, TSLA, AAPL"}}}
-2026-05-09 09:52:33,242 - $NVDA, TSLA, AAPL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
-2026-05-09 09:52:33,243 - single positional indexer is out-of-bounds
-2026-05-09 09:53:28,692 - $NVDA, TSLA, AAPL: possibly delisted; no price data found  (period=1y) (Yahoo error = "No data found, symbol may be delisted")
-2026-05-09 09:53:39,951 - $NVDA, TSLA, AAPL: possibly delisted; no price data found  (period=1y) (Yahoo error = "No data found, symbol may be delisted")
