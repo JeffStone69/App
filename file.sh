@@ -1,7 +1,9 @@
+cd /Users/jeff/Downloads/XAi/GIT/Xapp/App
+
+cat > modules/SIM.py << 'PYEOF'
 import gradio as gr, yfinance as yf, pandas as pd, sqlite3, os, logging, matplotlib.pyplot as plt
 from datetime import datetime
 from io import BytesIO
-import numpy as np
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(BASE, "data")
@@ -23,7 +25,7 @@ def init():
         c.execute('CREATE TABLE IF NOT EXISTS history (id INTEGER PRIMARY KEY, symbol TEXT, date TEXT, close REAL, volume INTEGER)')
         c.commit(); c.close()
 
-# ====================== ENHANCED LIVE TICKERS WITH RSI + BOLLINGER + PROFITABILITY ======================
+# ====================== ENHANCED LIVE TICKERS ======================
 def get_live_data(symbol):
     ticker = yf.Ticker(symbol)
     hist = ticker.history(period="30d")
@@ -31,70 +33,21 @@ def get_live_data(symbol):
     price = info.get("currentPrice") or hist["Close"].iloc[-1]
     return price, hist
 
-def calculate_indicators(hist):
-    # RSI
-    delta = hist["Close"].diff()
-    gain = (delta.where(delta > 0, 0)).rolling(14).mean()
-    loss = (-delta.where(delta < 0, 0)).rolling(14).mean()
-    rs = gain / loss
-    rsi = 100 - (100 / (1 + rs))
-    rsi_val = round(rsi.iloc[-1], 1)
-    rsi_sig = "Overbought" if rsi_val > 70 else "Oversold" if rsi_val < 30 else "Neutral"
-
-    # Bollinger Bands (20, 2)
-    sma = hist["Close"].rolling(20).mean()
-    std = hist["Close"].rolling(20).std()
-    upper = sma + 2 * std
-    lower = sma - 2 * std
-    bb_pos = round((hist["Close"].iloc[-1] - lower.iloc[-1]) / (upper.iloc[-1] - lower.iloc[-1]), 2)
-    bb_squeeze = "Yes" if (upper.iloc[-1] - lower.iloc[-1]) < hist["Close"].rolling(20).std().mean() * 1.2 else "No"
-
-    # MACD
-    ema12 = hist["Close"].ewm(span=12).mean()
-    ema26 = hist["Close"].ewm(span=26).mean()
-    macd = ema12 - ema26
-    signal_line = macd.ewm(span=9).mean()
-    macd_sig = "Bullish" if macd.iloc[-1] > signal_line.iloc[-1] else "Bearish"
-
-    # Profitability metrics
-    returns = hist["Close"].pct_change().dropna()
-    vol = round(returns.std() * (252**0.5) * 100, 1)
-    peak = hist["Close"].cummax()
-    drawdown = round(((hist["Close"] - peak) / peak).min() * 100, 1)
-    trend = round(np.polyfit(range(len(hist)), hist["Close"], 1)[0], 4)
-    trend_str = "Strong Up" if trend > 0.5 else "Up" if trend > 0 else "Down" if trend > -0.5 else "Strong Down"
-    profit_score = round((100 - abs(drawdown)) * (1 if rsi_val < 70 else 0.7) * (1 if macd_sig == "Bullish" else 0.8), 0)
-
-    return {
-        "RSI": rsi_val, "RSI Signal": rsi_sig,
-        "BB Position": bb_pos, "BB Squeeze": bb_squeeze,
-        "MACD": macd_sig,
-        "Volatility %": vol, "Max Drawdown %": drawdown,
-        "Trend": trend_str, "Profit Score": profit_score
-    }
-
 def live():
     results = []
     charts = []
-    tech = []
-    profit = []
+    momentum = []
+    risk = []
     
     for sym in FAV:
         try:
             price, hist = get_live_data(sym)
-            ind = calculate_indicators(hist)
-            
             results.append({"Symbol": sym, "Price": round(price, 2), "Time": datetime.now().strftime("%H:%M:%S")})
             
-            # Enhanced Chart with Bollinger Bands
+            # Price Chart
             fig, ax = plt.subplots(figsize=(6, 3))
             ax.plot(hist.index, hist["Close"], label="Price", color="blue")
-            sma = hist["Close"].rolling(20).mean()
-            std = hist["Close"].rolling(20).std()
-            ax.plot(hist.index, sma + 2*std, label="Upper BB", color="red", linestyle="--")
-            ax.plot(hist.index, sma - 2*std, label="Lower BB", color="green", linestyle="--")
-            ax.fill_between(hist.index, sma - 2*std, sma + 2*std, alpha=0.1)
-            ax.set_title(f"{sym} - 30 Day with Bollinger Bands")
+            ax.set_title(f"{sym} - 30 Day Price")
             ax.legend()
             plt.tight_layout()
             buf = BytesIO()
@@ -103,32 +56,26 @@ def live():
             charts.append((sym, buf))
             plt.close()
             
-            # Technical Indicators
-            tech.append({
-                "Symbol": sym,
-                "RSI": ind["RSI"],
-                "RSI Signal": ind["RSI Signal"],
-                "BB Position": ind["BB Position"],
-                "BB Squeeze": ind["BB Squeeze"],
-                "MACD": ind["MACD"]
-            })
+            # Momentum (5-day vs 20-day MA)
+            hist["MA5"] = hist["Close"].rolling(5).mean()
+            hist["MA20"] = hist["Close"].rolling(20).mean()
+            signal = "BUY" if hist["MA5"].iloc[-1] > hist["MA20"].iloc[-1] else "SELL"
+            momentum.append({"Symbol": sym, "Signal": signal, "MA5": round(hist["MA5"].iloc[-1], 2), "MA20": round(hist["MA20"].iloc[-1], 2)})
             
-            # Profitability Metrics
-            profit.append({
-                "Symbol": sym,
-                "Volatility %": ind["Volatility %"],
-                "Max Drawdown %": ind["Max Drawdown %"],
-                "Trend": ind["Trend"],
-                "Profit Score": ind["Profit Score"]
-            })
+            # Risk Analysis
+            returns = hist["Close"].pct_change().dropna()
+            vol = returns.std() * (252**0.5) * 100  # Annualized volatility
+            peak = hist["Close"].cummax()
+            drawdown = ((hist["Close"] - peak) / peak).min() * 100
+            risk.append({"Symbol": sym, "Volatility %": round(vol, 2), "Max Drawdown %": round(drawdown, 2)})
             
         except Exception as e:
             log(str(e))
             results.append({"Symbol": sym, "Price": "N/A", "Time": "Error"})
-            tech.append({"Symbol": sym, "RSI": "-", "RSI Signal": "Error", "BB Position": "-", "BB Squeeze": "-", "MACD": "-"})
-            profit.append({"Symbol": sym, "Volatility %": "-", "Max Drawdown %": "-", "Trend": "Error", "Profit Score": "-"})
+            momentum.append({"Symbol": sym, "Signal": "Error", "MA5": "-", "MA20": "-"})
+            risk.append({"Symbol": sym, "Volatility %": "-", "Max Drawdown %": "-"})
     
-    return pd.DataFrame(results), charts, pd.DataFrame(tech), pd.DataFrame(profit)
+    return pd.DataFrame(results), charts, pd.DataFrame(momentum), pd.DataFrame(risk)
 
 # ====================== REST OF THE APP (unchanged) ======================
 def fetch(sym, per="1y"):
@@ -183,14 +130,15 @@ with gr.Blocks(title="XForge Trader v9.2") as app:
     gr.Image(os.path.join(BASE, "logo.jpg"), height=100, show_label=False)
     gr.Markdown("# XForge Trader – Complete Dashboard")
     
+    # ====================== ENHANCED LIVE TICKERS TAB ======================
     with gr.Tab("🔥 Live Tickers"):
-        gr.Markdown("### Multi-View Live Dashboard (Prices + Bollinger Charts + RSI + Profitability)")
+        gr.Markdown("### Multi-View Live Dashboard (Prices + Charts + Momentum + Risk)")
         btn = gr.Button("Refresh All Data", variant="primary")
         live_table = gr.Dataframe()
-        charts_out = gr.Gallery(label="30-Day Price + Bollinger Bands", columns=3, height=220)
-        tech_df = gr.Dataframe(label="Technical Indicators (RSI, Bollinger, MACD)")
-        profit_df = gr.Dataframe(label="Profitability Metrics & Score")
-        btn.click(live, None, [live_table, charts_out, tech_df, profit_df])
+        charts_out = gr.Gallery(label="30-Day Price Charts", columns=3, height=200)
+        momentum_df = gr.Dataframe(label="Momentum (MA Crossover)")
+        risk_df = gr.Dataframe(label="Risk Analysis")
+        btn.click(live, None, [live_table, charts_out, momentum_df, risk_df])
 
     with gr.Tab("📈 Fetch & Store"):
         s=gr.Textbox("AAPL"); p=gr.Dropdown(["1y","5y"],value="1y")
@@ -204,3 +152,7 @@ with gr.Blocks(title="XForge Trader v9.2") as app:
     with gr.Tab("🔄 Update Forge"): gr.Button("Update Now").click(update_forge, None, gr.Textbox())
 
 app.launch(server_name="0.0.0.0", server_port=7860, theme=gr.themes.Soft())
+PYEOF
+
+echo "✅ Live Tickers tab fully upgraded with graphs, momentum & risk analysis."
+echo "Run: ./launch.command"
