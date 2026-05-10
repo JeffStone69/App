@@ -1,0 +1,17 @@
+Ticker,Strategy,Backtest Results,timestamp
+TSLA,SMA_Crossover,"'
+        ✅ Backtest Complete
+        Ticker: TSLA
+        Strategy: SMA_Crossover
+        Total Return: -17.93%
+        Sharpe Ratio: -0.24
+        Max Drawdown: -25.14%
+        ",2026-05-10 12:11:09.091449
+NVDA,SMA_Crossover,"'
+        ✅ Backtest Complete
+        Ticker: NVDA
+        Strategy: SMA_Crossover
+        Total Return: 27.52%
+        Sharpe Ratio: 0.54
+        Max Drawdown: -19.27%
+        ",2026-05-10 12:11:19.441169
