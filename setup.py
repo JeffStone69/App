@@ -234,5 +234,14 @@ def main():
         import asyncio
         asyncio.run(subscribe_live(args.tickers))
 
+
+# QUICK FIX PATCH - Web Dashboard
+def launch_dashboard():
+    print("\n🌐 Launching Elite Quant Web UI → http://localhost:8501")
+    subprocess.run([sys.executable, "-m", "streamlit", "run", "dashboard.py"])
+
+if "--dashboard" in sys.argv or "--all" in sys.argv:
+    launch_dashboard()
+
 if __name__ == "__main__":
     main()
