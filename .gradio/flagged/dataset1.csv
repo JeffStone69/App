@@ -1,0 +1,6 @@
+Tickers (comma separated),Result,timestamp
+TSLA,✅ TSLA: 251 rows loaded,2026-05-10 11:55:51.939957
+"AAPL,TSLA,NVDA,SPY","✅ AAPL: 251 rows loaded
+✅ TSLA: 251 rows loaded
+✅ NVDA: 251 rows loaded
+✅ SPY: 251 rows loaded",2026-05-10 11:56:04.089531
