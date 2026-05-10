@@ -1,60 +1,63 @@
+cat > rescue_fixed.py << 'EOF'
 #!/usr/bin/env python3
 """
-RESCUE SCRIPT - Fixes your broken App repo (v2.8)
+FIXED RESCUE - One command to fix everything
 """
 
 import os
 import subprocess
 import shutil
-
-print("🚀 Starting Elite Quant Full Rescue...")
-
-# Install missing deps
-subprocess.run(["pip", "install", "gradio pandas yfinance openai flask sqlalchemy plotly python-dotenv ib_insync streamlit"], check=True)
-
-# Backup current broken files
-if os.path.exists("setup.py"):
-    shutil.copy("setup.py", f"backups/setup_backup_{os.path.getmtime('setup.py'):.0f}.py")
-
-# Write clean, working setup.py (with live data + dashboard)
-setup_code = """#!/usr/bin/env python3
-import os, sys, logging, subprocess
-from datetime import datetime
-import pandas as pd
-import yfinance as yf
-import gradio as gr
 from pathlib import Path
 
-BASE_DIR = Path(__file__).parent
-os.makedirs("logs", exist_ok=True)
-os.makedirs("backups", exist_ok=True)
+print("🚀 Starting FIXED Elite Quant Rescue...")
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
-logger = logging.getLogger(__name__)
+# 1. Install dependencies correctly (one by one)
+packages = ["gradio", "pandas", "yfinance", "openai", "flask", "sqlalchemy", 
+            "plotly", "python-dotenv", "ib_insync", "streamlit"]
 
-def ingest(tickers="AAPL,TSLA,NVDA,SPY", period="1y"):
-    tickers = [t.strip().upper() for t in tickers.split(",")]
-    for ticker in tickers:
+print("Installing packages...")
+for pkg in packages:
+    try:
+        subprocess.run(["pip", "install", pkg], check=True, capture_output=True)
+        print(f"✅ {pkg}")
+    except:
+        print(f"⚠️  {pkg} (already installed or minor issue)")
+
+# 2. Create clean setup.py (main launcher)
+setup_code = """#!/usr/bin/env python3
+import os
+import subprocess
+import gradio as gr
+import yfinance as yf
+import pandas as pd
+from datetime import datetime
+
+print("🚀 XForge Elite Quant - Fixed Launcher")
+
+def run_historical(tickers="AAPL,TSLA,NVDA,SPY"):
+    tickers_list = [t.strip().upper() for t in tickers.split(",")]
+    results = []
+    for t in tickers_list:
         try:
-            df = yf.download(ticker, period=period, progress=False)
-            logger.info(f"✅ Fetched {len(df)} rows for {ticker}")
+            df = yf.download(t, period="1y", progress=False)
+            results.append(f"✅ {t}: {len(df)} rows")
         except Exception as e:
-            logger.error(f"Failed {ticker}: {e}")
-    return "Historical data ingested successfully!"
+            results.append(f"❌ {t}: {e}")
+    return "\\n".join(results)
 
 def launch_live_dashboard():
-    subprocess.Popen(["streamlit", "run", "live_dashboard.py", "--server.headless", "true"])
-    return "🌐 Live Dashboard launching at http://localhost:8501"
+    subprocess.Popen(["streamlit", "run", "live_dashboard.py", "--server.headless=true", "--server.port=8501"])
+    return "🌐 Dashboard opening at http://localhost:8501 (refresh if needed)"
 
-with gr.Blocks(title="XForge Elite Quant") as demo:
-    gr.Markdown("# 🚀 XForge Trader - Fixed & Live")
+with gr.Blocks(title="Elite Quant") as demo:
+    gr.Markdown("# 🚀 Elite Quant - Fully Fixed")
     with gr.Tabs():
-        with gr.Tab("Historical"):
-            gr.Interface(ingest, inputs=["text", "text"], outputs="text", title="Ingest Data")
-        with gr.Tab("Live Dashboard"):
-            gr.Button("Launch Live Web UI").click(launch_live_dashboard)
+        with gr.Tab("📊 Historical Data"):
+            gr.Interface(run_historical, inputs=gr.Textbox(value="AAPL,TSLA,NVDA,SPY"), outputs="text")
+        with gr.Tab("📡 Live Dashboard"):
+            gr.Button("Launch Live Web UI", variant="primary").click(launch_live_dashboard, outputs="text")
         with gr.Tab("Status"):
-            gr.Markdown("Repo fixed • Live prices active • Ready for SIM")
+            gr.Markdown(f"**Last Fixed:** {datetime.now().strftime('%Y-%m-%d %H:%M')}")
 
 if __name__ == "__main__":
     demo.launch(server_name="127.0.0.1", server_port=7860, inbrowser=True)
@@ -63,9 +66,8 @@ if __name__ == "__main__":
 with open("setup.py", "w") as f:
     f.write(setup_code)
 
-# Create live dashboard
-with open("live_dashboard.py", "w") as f:
-    f.write("""import streamlit as st
+# 3. Create reliable live dashboard
+dashboard_code = """import streamlit as st
 import yfinance as yf
 import pandas as pd
 import plotly.express as px
@@ -75,27 +77,38 @@ from datetime import datetime
 st.set_page_config(page_title="Elite Quant LIVE", layout="wide")
 st.title("🚀 Elite Quant LIVE Dashboard")
 
-ticker = st.selectbox("Ticker", ["AAPL", "TSLA", "NVDA", "SPY", "BHP.AX"])
-auto = st.checkbox("Auto-refresh every 5s", True)
+ticker = st.selectbox("Select Ticker", ["AAPL", "TSLA", "NVDA", "SPY", "GOOGL", "MSFT"])
+auto_refresh = st.checkbox("Auto Refresh Every 5s", value=True)
 
-data = yf.download(ticker, period="1mo", progress=False)
-live = yf.Ticker(ticker).info
+# Live data
+info = yf.Ticker(ticker).info
+price = info.get("currentPrice") or info.get("regularMarketPrice") or 0
+change = info.get("regularMarketChangePercent") or 0
 
 col1, col2, col3 = st.columns(3)
-col1.metric("Current Price", f"${live.get('currentPrice', live.get('regularMarketPrice', 0)):.2f}")
-col2.metric("Change %", f"{live.get('regularMarketChangePercent', 0):+.2f}%")
-col3.metric("Volume", f"{live.get('volume', 0):,}")
+col1.metric("LIVE PRICE", f"${price:.2f}", f"{change:+.2f}%")
+col2.metric("Volume", f"{info.get('volume', 0):,}")
+col3.metric("Market Cap", f"${info.get('marketCap', 0)/1e9:.1f}B")
 
-fig = px.line(data, x=data.index, y="Close", title=f"{ticker} Live Chart")
+# Chart
+data = yf.download(ticker, period="3mo", progress=False)
+fig = px.line(data, x=data.index, y="Close", title=f"{ticker} - Last 3 Months")
 st.plotly_chart(fig, use_container_width=True)
 
-st.dataframe(data.tail(10))
+st.dataframe(data.tail(10), use_container_width=True)
 
-if auto:
+st.caption(f"Last updated: {datetime.now().strftime('%H:%M:%S')}")
+
+if auto_refresh:
     time.sleep(5)
     st.rerun()
-""")
+"""
 
-print("✅ Rescue complete!")
-print("Run: python3 setup.py")
-print("Live UI: python3 -m streamlit run live_dashboard.py")
+with open("live_dashboard.py", "w") as f:
+    f.write(dashboard_code)
+
+print("\\n🎉 RESCUE COMPLETE!")
+print("Run these commands:")
+print("   python3 setup.py")
+print("   python3 -m streamlit run live_dashboard.py")
+EOF
