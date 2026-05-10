@@ -16,7 +16,7 @@ def run_historical(tickers="AAPL,TSLA,NVDA,SPY"):
 
 def launch_dashboard():
     subprocess.Popen(["streamlit", "run", "live_dashboard.py", "--server.headless=true", "--server.port=8501"])
-    return "🌐 Dashboard launched at http://localhost:8501\n(Refresh browser if needed)"
+    return "🌐 Dashboard launched at http://localhost:8501"
 
 with gr.Blocks(title="Elite Quant") as demo:
     gr.Markdown("# 🚀 Elite Quant - FIXED & LIVE")
@@ -24,19 +24,16 @@ with gr.Blocks(title="Elite Quant") as demo:
         with gr.Tab("📊 Historical Data"):
             gr.Interface(
                 fn=run_historical,
-                inputs=gr.Textbox(value="AAPL,TSLA,NVDA,SPY", label="Tickers (comma separated)"),
+                inputs=gr.Textbox(value="AAPL,TSLA,NVDA,SPY", label="Tickers"),
                 outputs=gr.Textbox(label="Result"),
-                title="Fetch Historical Data"
             )
         with gr.Tab("📡 Live Dashboard"):
-            output_text = gr.Textbox(label="Status")
-            gr.Button("🚀 Launch Live Web Dashboard", variant="primary").click(
-                fn=launch_dashboard,
-                inputs=None,
-                outputs=output_text
+            output = gr.Textbox(label="Status")
+            gr.Button("🚀 Launch Live Dashboard", variant="primary").click(
+                launch_dashboard, outputs=output
             )
         with gr.Tab("Status"):
-            gr.Markdown(f"**Repo Status:** Fully Fixed • {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+            gr.Markdown(f"**Fixed:** {datetime.now().strftime('%Y-%m-%d %H:%M')}")
 
 if __name__ == "__main__":
     demo.launch(server_name="127.0.0.1", server_port=7860, inbrowser=True)
